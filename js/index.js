@@ -24,9 +24,13 @@ inputHandler = debounce(inputHandler, 500);
 
 async function inputHandler(ev, arrayOfRepo) {
   if (ev.target.value) {
-    let result = await request(ev.target.value);
     arrayOfRepo.length = 0;
-    result.items.forEach((el) => arrayOfRepo.push(el));
+    try {
+      let result = await request(ev.target.value);
+      result.items.forEach((el) => arrayOfRepo.push(el));
+    } catch (e) {
+      alert('Ошибка сервера. Попробуйте еще раз');
+    }
     clearOfItems(containerList);
     creationOfItems(arrayOfRepo, containerList);
   } else {
